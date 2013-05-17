@@ -1,0 +1,113 @@
+<div id="_anim_img_block">
+  <p align="center">
+    <img id="_anim_img">
+  </p>
+  <p align="center">
+    <button onclick="first_frame()"><img src="icons/first.png"></button>
+    <button onclick="previous_frame()"><img src="icons/prev.png"></button>
+    <button onclick="reverse_animation()"><img src="icons/reverse.png"></button>
+    <button onclick="pause_animation()"><img src="icons/pause.png"></button>
+    <button onclick="play_animation()"><img src="icons/play.png"></button>
+    <button onclick="next_frame()"><img src="icons/next.png"></button>
+    <button onclick="last_frame()"><img src="icons/last.png"></button>
+  </p>
+  <form align="center" action="#n" name="loopForm">
+    <input type="radio" name="looping" value="once"> Once </input>
+    <input type="radio" name="looping" value="loop" checked> Loop </input>
+    <input type="radio" name="looping" value="reflect"> Reflect </input>
+  </form>
+</div>
+
+<script language="javascript">
+  var frames = new Array(100);
+  var interval = 30;
+
+  var count = 0;
+  var timer = null;
+
+  for (var i=0; i<frames.length; i++)
+  {
+   frames[i] = new Image();
+   frames[i].src = "frames/frame" + ("00" + (i + 1)).slice(-3) + ".png";
+  }
+  set_frame(0)
+
+  function set_frame(i)
+  {
+    document.getElementById('_anim_img').src = frames[count].src;
+  }
+
+  function next_frame()
+  {
+    count = Math.min(frames.length - 1, count + 1);
+    set_frame(count);
+  }
+
+  function previous_frame()
+  {
+    count = Math.max(0, count - 1);
+    set_frame(count);
+  }
+
+  function first_frame()
+  {
+    count = 0;
+    set_frame(count);
+  }
+
+  function last_frame()
+  {
+    count = frames.length - 1;
+    set_frame(count);
+  } 
+
+  function anim_step_forward()
+  {
+    count += 1;
+    if(count >= frames.length){
+      if(document.loopForm.looping[1].checked){
+        first_frame();
+      }else if(document.loopForm.looping[2].checked){
+        last_frame();
+        reverse_animation();
+      }else{
+        last_frame();
+        pause_animation();
+      }
+    }
+    set_frame(count);
+  }
+
+  function anim_step_reverse()
+  {
+    count -= 1;
+    if(count < 0){
+      if(document.loopForm.looping[1].checked){
+        last_frame();
+      }else if(document.loopForm.looping[2].checked){
+        first_frame();
+        play_animation();
+      }else{
+        first_frame();
+        pause_animation();
+      }
+    }
+    set_frame(count);
+  }
+
+  function play_animation() {
+    pause_animation();
+    if (!timer) timer = setInterval(anim_step_forward, interval);
+  }
+
+  function reverse_animation() {
+    pause_animation();
+    if (!timer) timer = setInterval(anim_step_reverse, interval);
+  }
+
+  function pause_animation() {
+    if (!timer) return false;
+    clearInterval(timer);
+    timer = null;
+  }
+</script>
