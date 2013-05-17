@@ -12,5 +12,5 @@ ax.set_xlim(0, 10)
 ax.set_ylim(-2, 2)
 
 for i in range(100):
-    line.set_data(x, np.sin(x - i * 0.02 * np.pi))
+    line.set_data(x, np.cos(i * 0.02 * np.pi) * np.sin(x - i * 0.02 * np.pi))
     fig.savefig('frames/frame%.03i.png' % (i + 1))

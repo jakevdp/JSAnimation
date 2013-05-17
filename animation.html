@@ -1,8 +1,8 @@
-<div id="_anim_img_block">
+<div class="animation">
   <p align="center">
     <img id="_anim_img">
     <br>
-    <input id="frame_slider" type="range" style="width:300px" name="points" min="0" max="99" step="1" value="0" onchange="set_frame(parseInt(this.value));"></input>
+    <input id="frame_slider" type="range" style="width:300px" name="points" min="0" max="1" step="1" value="0" onchange="set_frame(parseInt(this.value));"></input>
     <br>
     <button onclick="first_frame()"><img src="icons/first.png"></button>
     <button onclick="previous_frame()"><img src="icons/prev.png"></button>
@@ -12,7 +12,7 @@
     <button onclick="next_frame()"><img src="icons/next.png"></button>
     <button onclick="last_frame()"><img src="icons/last.png"></button>
   </p>
-  <form align="center" action="#n" name="loopForm">
+  <form align="center" action="#n" name="loopForm" class="anim_control">
     <input type="radio" name="looping" value="once"> Once </input>
     <input type="radio" name="looping" value="loop" checked> Loop </input>
     <input type="radio" name="looping" value="reflect"> Reflect </input>
@@ -20,18 +20,21 @@
 </div>
 
 <script language="javascript">
-  var frames = new Array(100);
+  var Nframes = 100
+  var frames = new Array(Nframes);
   var interval = 30;
 
   var count = 0;
   var timer = null;
 
-  for (var i=0; i<frames.length; i++)
+  for (var i=0; i<Nframes; i++)
   {
    frames[i] = new Image();
    frames[i].src = "frames/frame" + ("00" + (i + 1)).slice(-3) + ".png";
   }
   set_frame(count);
+
+  document.getElementById('frame_slider').max = Nframes - 1;
 
   function set_frame(frame)
   {

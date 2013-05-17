@@ -1,3 +1,4 @@
 *~
 *.pyc
 frames/*.png
+frames/*.svg
