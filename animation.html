@@ -1,8 +1,9 @@
 <div id="_anim_img_block">
   <p align="center">
     <img id="_anim_img">
-  </p>
-  <p align="center">
+    <br>
+    <input id="frame_slider" type="range" style="width:300px" name="points" min="0" max="99" step="1" value="0" onchange="set_frame(parseInt(this.value));"></input>
+    <br>
     <button onclick="first_frame()"><img src="icons/first.png"></button>
     <button onclick="previous_frame()"><img src="icons/prev.png"></button>
     <button onclick="reverse_animation()"><img src="icons/reverse.png"></button>
@@ -30,35 +31,35 @@
    frames[i] = new Image();
    frames[i].src = "frames/frame" + ("00" + (i + 1)).slice(-3) + ".png";
   }
-  set_frame(0)
+  set_frame(count);
 
-  function set_frame(i)
+  function set_frame(frame)
   {
+    count = frame;
     document.getElementById('_anim_img').src = frames[count].src;
+    if(document.getElementById('frame_slider').value != count){
+      document.getElementById('frame_slider').value = count;
+    }
   }
 
   function next_frame()
   {
-    count = Math.min(frames.length - 1, count + 1);
-    set_frame(count);
+    set_frame(Math.min(frames.length - 1, count + 1));
   }
 
   function previous_frame()
   {
-    count = Math.max(0, count - 1);
-    set_frame(count);
+    set_frame(Math.max(0, count - 1));
   }
 
   function first_frame()
   {
-    count = 0;
-    set_frame(count);
+    set_frame(0);
   }
 
   function last_frame()
   {
-    count = frames.length - 1;
-    set_frame(count);
+    set_frame(frames.length - 1);
   } 
 
   function anim_step_forward()
