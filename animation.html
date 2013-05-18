@@ -40,9 +40,7 @@
   {
     count = frame;
     document.getElementById('_anim_img').src = frames[count].src;
-    if(document.getElementById('frame_slider').value != count){
-      document.getElementById('frame_slider').value = count;
-    }
+    document.getElementById('frame_slider').value = count;
   }
 
   function next_frame()
