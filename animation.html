@@ -11,6 +11,10 @@
     <button onclick="play_animation()"><img src="icons/play.png"></button>
     <button onclick="next_frame()"><img src="icons/next.png"></button>
     <button onclick="last_frame()"><img src="icons/last.png"></button>
+    <br>
+    <button onclick="slower()">Slower</button>
+    <button onclick="faster()">Faster</button>
+    
   </p>
   <form align="center" action="#n" name="loopForm" class="anim_control">
     <input type="radio" name="looping" value="once"> Once </input>
@@ -62,6 +66,20 @@
   {
     set_frame(frames.length - 1);
   } 
+
+  function slower()
+  {
+    interval = interval / 0.7;
+    pause_animation();
+    if (!timer) timer = setInterval(anim_step_forward, interval);
+  }
+  function faster()
+  {
+    interval = interval * 0.7;
+    pause_animation();
+    if (!timer) timer = setInterval(anim_step_forward, interval);
+  }
+
 
   function anim_step_forward()
   {
