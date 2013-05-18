@@ -1,27 +1,26 @@
 <script language="javascript">
   /* Define the Animation class */
-  function Animation(Nframes, img_id, slider_id, looper_id){
-    this.Nframes = Nframes;
+  function Animation(frames, img_id, slider_id, loop_select_id){
     this.img_id = img_id;
     this.slider_id = slider_id;
-    this.looper_id = looper_id;
+    this.loop_select_id = loop_select_id;
     this.interval = 30;
     this.current_frame = 0;
     this.direction = 0;
     this.timer = null;
-    this.frames = new Array(Nframes);
+    this.frames = new Array(frames.length);
 
-    for (var i=0; i<Nframes; i++)
+    for (var i=0; i<frames.length; i++)
     {
      this.frames[i] = new Image();
-     this.frames[i].src = "frames/frame" + ("00" + (i + 1)).slice(-3) + ".png";
+     this.frames[i].src = frames[i];
     }
-    this.set_frame(this.current_frame);
     document.getElementById(this.slider_id).max = this.frames.length - 1;
+    this.set_frame(this.current_frame);
   }
 
   Animation.prototype.get_loop_state = function(){
-    var button_group = document[this.looper_id].state;
+    var button_group = document[this.loop_select_id].state;
     for (var i = 0; i < button_group.length; i++) {
         var button = button_group[i];
         if (button.checked) {
@@ -136,13 +135,11 @@
 </script>
 
 <div class="animation" align="center">
-  <p>
     <img id="anim_img">
     <br>
-    <button onclick="anim.slower()">&#8211;</button>
-    <input id="anim_frame_slider" type="range" style="width:300px" name="points" min="0" max="1" step="1" value="0" onchange="anim.set_frame(parseInt(this.value));"></input>
-    <button onclick="anim.faster()">+</button>
+    <input id="anim_frame_slider" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" onchange="anim.set_frame(parseInt(this.value));"></input>
     <br>
+    <button onclick="anim.slower()">&#8211;</button>
     <button onclick="anim.first_frame()"><img src="icons/first.png"></button>
     <button onclick="anim.previous_frame()"><img src="icons/prev.png"></button>
     <button onclick="anim.reverse_animation()"><img src="icons/reverse.png"></button>
@@ -150,7 +147,7 @@
     <button onclick="anim.play_animation()"><img src="icons/play.png"></button>
     <button onclick="anim.next_frame()"><img src="icons/next.png"></button>
     <button onclick="anim.last_frame()"><img src="icons/last.png"></button>
-  </p>
+    <button onclick="anim.faster()">+</button>
   <form action="#n" name="loop_select" class="anim_control">
     <input type="radio" name="state" value="once"> Once </input>
     <input type="radio" name="state" value="loop" checked> Loop </input>
@@ -158,8 +155,19 @@
   </form>
 </div>
 
+
 <script language="javascript">
-  /* Instantiate the Animation class
-     the IDs given should match those used in the template above */
-  anim = new Animation(100, "anim_img", "anim_frame_slider", "loop_select");
+  /* Instantiate the Animation class. */
+  /* The IDs given should match those used in the template above. */
+  var img_id = "anim_img";
+  var slider_id = "anim_frame_slider";
+  var loop_select_id = "loop_select";
+  var frames = new Array(100);
+  for (var i=0; i<100; i++){
+    frames[i] =  "frames/frame" + ("00" + (i + 1)).slice(-3) + ".png";
+  }
+
+  /* Name of 'anim' variable should be unique, and match what's specified
+     in the template above */
+  anim = new Animation(frames, img_id, slider_id, loop_select_id);
 </script>
