@@ -13,6 +13,6 @@ Trying it Out
 -------------
 To test this out, first generate the frames by running
 
-    python make_frames.py
+    python make_animation.py
 
 then use your web browser to open the file ``animation.html``.
