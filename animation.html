@@ -2,7 +2,9 @@
   <p align="center">
     <img id="_anim_img">
     <br>
+    <button onclick="slower()">&#8211;</button>
     <input id="frame_slider" type="range" style="width:300px" name="points" min="0" max="1" step="1" value="0" onchange="set_frame(parseInt(this.value));"></input>
+    <button onclick="faster()">+</button>
     <br>
     <button onclick="first_frame()"><img src="icons/first.png"></button>
     <button onclick="previous_frame()"><img src="icons/prev.png"></button>
@@ -11,10 +13,6 @@
     <button onclick="play_animation()"><img src="icons/play.png"></button>
     <button onclick="next_frame()"><img src="icons/next.png"></button>
     <button onclick="last_frame()"><img src="icons/last.png"></button>
-    <br>
-    <button onclick="slower()">Slower</button>
-    <button onclick="faster()">Faster</button>
-    
   </p>
   <form align="center" action="#n" name="loopForm" class="anim_control">
     <input type="radio" name="looping" value="once"> Once </input>
@@ -24,22 +22,24 @@
 </div>
 
 <script language="javascript">
+  /*** define the variables we need ***/
   var Nframes = 100
   var frames = new Array(Nframes);
   var interval = 30;
-
   var count = 0;
+  var direction = 0;
   var timer = null;
 
+  /*** initialize the frames and widgets ***/
   for (var i=0; i<Nframes; i++)
   {
    frames[i] = new Image();
    frames[i].src = "frames/frame" + ("00" + (i + 1)).slice(-3) + ".png";
   }
   set_frame(count);
+  document.getElementById('frame_slider').max = frames.length - 1;
 
-  document.getElementById('frame_slider').max = Nframes - 1;
-
+  /*** functions to enable the animation ***/
   function set_frame(frame)
   {
     count = frame;
@@ -69,65 +69,71 @@
 
   function slower()
   {
-    interval = interval / 0.7;
-    pause_animation();
-    if (!timer) timer = setInterval(anim_step_forward, interval);
-  }
-  function faster()
-  {
-    interval = interval * 0.7;
-    pause_animation();
-    if (!timer) timer = setInterval(anim_step_forward, interval);
+    interval /= 0.7;
+    if(direction > 0){play_animation();}
+    else if(direction < 0){reverse_animation();}
   }
 
+  function faster()
+  {
+    interval *= 0.7;
+    if(direction > 0){play_animation();}
+    else if(direction < 0){reverse_animation();}
+  }
 
   function anim_step_forward()
   {
     count += 1;
-    if(count >= frames.length){
+    if(count < frames.length){
+      set_frame(count);
+    }else{
       if(document.loopForm.looping[1].checked){
         first_frame();
       }else if(document.loopForm.looping[2].checked){
         last_frame();
         reverse_animation();
       }else{
-        last_frame();
         pause_animation();
+        last_frame();
       }
     }
-    set_frame(count);
   }
 
   function anim_step_reverse()
   {
     count -= 1;
-    if(count < 0){
+    if(count >= 0){
+      set_frame(count);
+    }else{
       if(document.loopForm.looping[1].checked){
         last_frame();
       }else if(document.loopForm.looping[2].checked){
         first_frame();
         play_animation();
       }else{
-        first_frame();
         pause_animation();
+        first_frame();
       }
     }
-    set_frame(count);
   }
 
-  function play_animation() {
+  function play_animation(){
     pause_animation();
+    direction = 1;
     if (!timer) timer = setInterval(anim_step_forward, interval);
   }
 
   function reverse_animation() {
     pause_animation();
+    direction = -1;
     if (!timer) timer = setInterval(anim_step_reverse, interval);
   }
 
   function pause_animation() {
-    if (!timer) return false;
-    clearInterval(timer);
-    timer = null;
+    direction = 0;
+    if (timer){
+      clearInterval(timer);
+      timer = null;
+    }
   }
 </script>
