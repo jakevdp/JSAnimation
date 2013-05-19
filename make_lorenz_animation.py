@@ -21,7 +21,7 @@ np.random.seed(1)
 x0 = -15 + 30 * np.random.random((N_trajectories, 3))
 
 # Solve for the trajectories
-t = np.linspace(0, 4, 1000)
+t = np.linspace(0, 2, 500)
 x_t = np.asarray([integrate.odeint(lorentz_deriv, x0i, t)
                   for x0i in x0])
 
@@ -63,7 +63,7 @@ def animate(i):
     i = (2 * i) % x_t.shape[1]
 
     for line, pt, xi in zip(lines, pts, x_t):
-        x, y, z = xi[:i].T
+        x, y, z = xi[:i + 1].T
         line.set_data(x, y)
         line.set_3d_properties(z)
 

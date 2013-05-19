@@ -1,7 +1,4 @@
-animation.html
-animation_frames
 *~
 *.pyc
-frames/*.png
-frames/*.svg
 *.html
+*_frames/*.png

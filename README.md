@@ -11,8 +11,18 @@ initial ideas along these lines, see
 
 Trying it Out
 -------------
-To test this out, first generate the frames by running
+To test this with a basic animation using non-embedded frames, run
 
     python make_animation.py
 
-then use your web browser to open the file ``animation.html``.
+and then use your web browser to open the file ``animation.html``.
+This script creates the ``animation_frames`` directory, which contains the
+individual png image representing each frame.
+
+To test a more sophisticated animation with embedded frames, run
+
+    python make_lorenz_animation.py
+
+and then use your web browser to open the file ``lorenz_animation.html``.
+This does not create a frame directory, but rather embeds the frames directly
+in the html document in base64 encoding.
