@@ -193,7 +193,9 @@ DISPLAY_TEMPLATE = """
   var loop_select_id = "_anim_loop_select{id}";
   var frames = new Array({Nframes});
   {fill_frames}
-  anim{id} = new Animation(frames, img_id, slider_id, loop_select_id);
+  setTimeout(function() {{
+      anim{id} = new Animation(frames, img_id, slider_id, loop_select_id);
+  }}, 0);
 </script>
 """
 
