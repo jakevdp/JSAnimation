@@ -8,6 +8,11 @@ JSAnimation
 This package implements an HTML/Javascript writer for Matplotlib animations.
 The result can be embedded in a web page, or an IPython notebook.
 
+Example
+-------
+See a [rendered example](http://nbviewer.ipython.org/urls/raw.github.com/jakevdp/JSAnimation/master/animation_example.ipynb): please note the browser
+requirements listedbelow.
+
 Testing it Out
 --------------
 There are several scripts which demonstrate this.  ``make_animation.py``
