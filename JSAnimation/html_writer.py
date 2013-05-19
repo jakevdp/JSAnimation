@@ -4,6 +4,25 @@ import tempfile
 import random
 
 
+ICON_DIR = os.path.join(os.path.dirname(__file__), 'icons')
+
+class _Icons(object):
+    """class to load icons and convert to base64"""
+    icons = ['first', 'prev', 'reverse', 'pause', 'play', 'next', 'last']
+
+    def __init__(self, icon_dir=ICON_DIR, extension='png'):
+        self.icon_dir = icon_dir
+        self.extension = extension
+        for icon in self.icons:
+            setattr(self, icon,
+                    self._load_base64('{0}.{1}'.format(icon, extension)))
+
+    def _load_base64(self, filename):
+        data = open(os.path.join(self.icon_dir, filename), 'rb').read()
+        return 'data:image/{0};base64,{1}"\n'.format(self.extension,
+                                                     data.encode('base64'))
+
+
 JS_INCLUDE = """
 <script language="javascript">
   /* Define the Animation class */
@@ -150,13 +169,13 @@ DISPLAY_TEMPLATE = """
     <input id="_anim_slider{id}" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" onchange="anim{id}.set_frame(parseInt(this.value));"></input>
     <br>
     <button onclick="anim{id}.slower()">&#8211;</button>
-    <button onclick="anim{id}.first_frame()"><img src="icons/first.png"></button>
-    <button onclick="anim{id}.previous_frame()"><img src="icons/prev.png"></button>
-    <button onclick="anim{id}.reverse_animation()"><img src="icons/reverse.png"></button>
-    <button onclick="anim{id}.pause_animation()"><img src="icons/pause.png"></button>
-    <button onclick="anim{id}.play_animation()"><img src="icons/play.png"></button>
-    <button onclick="anim{id}.next_frame()"><img src="icons/next.png"></button>
-    <button onclick="anim{id}.last_frame()"><img src="icons/last.png"></button>
+    <button onclick="anim{id}.first_frame()"><img src="{icons.first}"></button>
+    <button onclick="anim{id}.previous_frame()"><img src="{icons.prev}"></button>
+    <button onclick="anim{id}.reverse_animation()"><img src="{icons.reverse}"></button>
+    <button onclick="anim{id}.pause_animation()"><img src="{icons.pause}"></button>
+    <button onclick="anim{id}.play_animation()"><img src="{icons.play}"></button>
+    <button onclick="anim{id}.next_frame()"><img src="{icons.next}"></button>
+    <button onclick="anim{id}.last_frame()"><img src="{icons.last}"></button>
     <button onclick="anim{id}.faster()">+</button>
   <form action="#n" name="_anim_loop_select{id}" class="anim_control">
     <input type="radio" name="state" value="once"> Once </input>
@@ -267,7 +286,8 @@ class HTMLWriter(FileMovieWriter):
             of.write(JS_INCLUDE)
             of.write(DISPLAY_TEMPLATE.format(id=self.anim_id,
                                              Nframes=len(self._temp_names),
-                                             fill_frames=fill_frames))
+                                             fill_frames=fill_frames,
+                                             icons=_Icons()))
 
         # Increment the counter, so that if multiple animations are made the
         # variables and element ids won't conflict.

@@ -4,3 +4,4 @@ animation_frames
 *.pyc
 frames/*.png
 frames/*.svg
+*.html

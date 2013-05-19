@@ -6,6 +6,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import cnames
 from matplotlib import animation
 
+from JSAnimation import HTMLWriter
+
 N_trajectories = 20
 
 
@@ -24,7 +26,7 @@ x_t = np.asarray([integrate.odeint(lorentz_deriv, x0i, t)
                   for x0i in x0])
 
 # Set up figure & 3D axis for animation
-fig = plt.figure()
+fig = plt.figure(figsize=(4, 3))
 ax = fig.add_axes([0, 0, 1, 1], projection='3d')
 ax.axis('off')
 
@@ -34,7 +36,7 @@ colors = plt.cm.jet(np.linspace(0, 1, N_trajectories))
 # set up lines and points
 lines = sum([ax.plot([], [], [], '-', c=c)
              for c in colors], [])
-pts = sum([ax.plot([], [], [], 'o', c=c)
+pts = sum([ax.plot([], [], [], 'o', c=c, ms=4)
            for c in colors], [])
 
 # prepare the axes limits
@@ -73,15 +75,9 @@ def animate(i):
     return lines + pts
 
 # instantiate the animator.
-#anim = animation.FuncAnimation(fig, animate, init_func=init,
-#                               frames=500, interval=30, blit=True)
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=200, interval=30, blit=True)
 
-# Save as mp4. This requires mplayer or ffmpeg to be installed
-#anim.save('lorentz_attractor.mp4', fps=15, extra_args=['-vcodec', 'libx264'])
+anim.save('lorenz_animation.html', writer=HTMLWriter(embed_frames=True))
 
-#plt.show()
-
-for i in range(100):
-    animate(2 * i + 1)
-    fig.savefig('frames/frame%.03i.png' % (i + 1), dpi=80)
 
