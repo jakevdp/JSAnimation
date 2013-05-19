@@ -21,8 +21,5 @@ def animate(i):
 anim = animation.FuncAnimation(fig, animate, init_func=init,
                                frames=100, interval=20, blit=True)
 
-# set embed_frames=False to save each frame as an individual image file
-anim.save('animation.html', writer=HTMLWriter(embed_frames=False))
-
-# set embed_frames=True to embed each frame in the html using base64 encoding
-#anim.save('animation.html', writer=HTMLWriter(embed_frames=True))
+# set embed_frames=True to embed base64-encoded frames directly in the HTML
+anim.save('animation.html', writer=HTMLWriter(embed_frames=True))

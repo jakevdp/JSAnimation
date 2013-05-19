@@ -1,28 +1,44 @@
 JSAnimation
 ===========
 
-Experimenting with frame-based Javascript animations.
-Eventually, I'd like this to become a plugin for the IPython notebook, so
-that animations can be embedded automatically.  For a couple examples of
-initial ideas along these lines, see
-[this notebook](http://nbviewer.ipython.org/5573741) and
-[this blog post](http://jakevdp.github.io/blog/2013/05/12/embedding-matplotlib-animations/).
+*Copyright (c) 2013, Jake Vanderplas*
 
+*License: [BSD](http://opensource.org/licenses/BSD-2-Clause)*
 
-Trying it Out
--------------
-To test this with a basic animation using non-embedded frames, run
+This package implements an HTML/Javascript writer for Matplotlib animations.
+The result can be embedded in a web page, or an IPython notebook.
+
+Testing it Out
+--------------
+There are several scripts which demonstrate this.  ``make_animation.py``
+creates a basic animation, with the frame data embedded within the HTML
+document.  Run this using
 
     python make_animation.py
 
-and then use your web browser to open the file ``animation.html``.
-This script creates the ``animation_frames`` directory, which contains the
-individual png image representing each frame.
+and then open the resulting file, ``animation.html`` using your web browser.
+This file is created using the option ``embed = True``, which means that the
+image data is embedded directly in the html file in base64-representation.
+This means that the animation is entirely self-contained in the file.
 
-To test a more sophisticated animation with embedded frames, run
+A more sophisticated animation can be created using
 
     python make_lorenz_animation.py
 
-and then use your web browser to open the file ``lorenz_animation.html``.
-This does not create a frame directory, but rather embeds the frames directly
-in the html document in base64 encoding.
+(adapted from [this blog post](http://jakevdp.github.io/blog/2013/02/16/animating-the-lorentz-system-in-3d/)
+The resulting file, ``lorenz_animation.py``, can be opened in your web browser.
+This animation is created using the option ``embed = False``, which means that
+the frames are individually stored in the directory ``lorenz_animation_frames``.
+This prevents the html file from being too large.
+
+If you have IPython notebook installed, you can open ``animation_example.ipynb``
+to see the automatic animation representation within the notebook.  Simply
+import the ``IPython_display`` submodule, create the animation, and the
+javascript widget will appear embedded in your notebook window.
+
+Browser Compatibility
+---------------------
+Because the animation widget uses an HTML5 slider element, it does not work
+in some browsers.  In particular, Firefox does not yet support this element.
+For a comprehensive list of supported browsers, see
+[this list](http://caniuse.com/input-range).

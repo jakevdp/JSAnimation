@@ -1,3 +1,9 @@
+"""
+Lorenz animation
+
+Adapted from http://jakevdp.github.io/blog/2013/02/16/animating-the-lorentz-system-in-3d/
+"""
+
 import numpy as np
 from scipy import integrate
 
@@ -78,6 +84,7 @@ def animate(i):
 anim = animation.FuncAnimation(fig, animate, init_func=init,
                                frames=200, interval=30, blit=True)
 
-anim.save('lorenz_animation.html', writer=HTMLWriter(embed_frames=True))
+# set embed_frames=False so that frames will be stored individually
+anim.save('lorenz_animation.html', writer=HTMLWriter(embed_frames=False))
 
 

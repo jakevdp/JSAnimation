@@ -193,6 +193,9 @@ DISPLAY_TEMPLATE = """
   var loop_select_id = "_anim_loop_select{id}";
   var frames = new Array({Nframes});
   {fill_frames}
+
+  /* set a timeout to make sure all the above elements are created before
+     the object is initialized. */
   setTimeout(function() {{
       anim{id} = new Animation(frames, img_id, slider_id, loop_select_id);
   }}, 0);
