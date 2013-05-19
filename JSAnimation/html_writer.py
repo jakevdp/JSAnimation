@@ -169,13 +169,13 @@ DISPLAY_TEMPLATE = """
     <input id="_anim_slider{id}" type="range" style="width:350px" name="points" min="0" max="1" step="1" value="0" onchange="anim{id}.set_frame(parseInt(this.value));"></input>
     <br>
     <button onclick="anim{id}.slower()">&#8211;</button>
-    <button onclick="anim{id}.first_frame()"><img src="{icons.first}"></button>
-    <button onclick="anim{id}.previous_frame()"><img src="{icons.prev}"></button>
-    <button onclick="anim{id}.reverse_animation()"><img src="{icons.reverse}"></button>
-    <button onclick="anim{id}.pause_animation()"><img src="{icons.pause}"></button>
-    <button onclick="anim{id}.play_animation()"><img src="{icons.play}"></button>
-    <button onclick="anim{id}.next_frame()"><img src="{icons.next}"></button>
-    <button onclick="anim{id}.last_frame()"><img src="{icons.last}"></button>
+    <button onclick="anim{id}.first_frame()"><img class="anim_icon" src="{icons.first}"></button>
+    <button onclick="anim{id}.previous_frame()"><img class="anim_icon" src="{icons.prev}"></button>
+    <button onclick="anim{id}.reverse_animation()"><img class="anim_icon" src="{icons.reverse}"></button>
+    <button onclick="anim{id}.pause_animation()"><img class="anim_icon" src="{icons.pause}"></button>
+    <button onclick="anim{id}.play_animation()"><img class="anim_icon" src="{icons.play}"></button>
+    <button onclick="anim{id}.next_frame()"><img class="anim_icon" src="{icons.next}"></button>
+    <button onclick="anim{id}.last_frame()"><img class="anim_icon" src="{icons.last}"></button>
     <button onclick="anim{id}.faster()">+</button>
   <form action="#n" name="_anim_loop_select{id}" class="anim_control">
     <input type="radio" name="state" value="once"> Once </input>
@@ -233,7 +233,7 @@ class HTMLWriter(FileMovieWriter):
     args_key = 'animation.ffmpeg_args'
     supported_formats = ['png', 'jpeg', 'tiff', 'svg']
     
-    def __init__(self, fps=5, codec=None, bitrate=None, extra_args=None,
+    def __init__(self, fps=30, codec=None, bitrate=None, extra_args=None,
                  metadata=None, embed_frames=False):
         self.embed_frames = embed_frames
         self._saved_frames = list()
@@ -288,7 +288,8 @@ class HTMLWriter(FileMovieWriter):
                                            self.frame_format)
 
         with open(self.outfile, 'w') as of:
-            of.write(JS_INCLUDE.format(interval=int(1000./self.fps)))
+            print self.fps
+            of.write(JS_INCLUDE.format(interval=30))
             of.write(DISPLAY_TEMPLATE.format(id=self.anim_id,
                                              Nframes=len(self._temp_names),
                                              fill_frames=fill_frames,

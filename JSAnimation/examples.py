@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 from matplotlib import animation
 from JSAnimation import IPython_display
 
-def basic_animation(frames=100, interval=20):
+def basic_animation(frames=100, interval=30):
     """Plot a basic sine wave with oscillating amplitude"""
     fig = plt.figure()
     ax = plt.axes(xlim=(0, 10), ylim=(-2, 2))
