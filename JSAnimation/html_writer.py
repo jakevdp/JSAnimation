@@ -288,7 +288,6 @@ class HTMLWriter(FileMovieWriter):
                                            self.frame_format)
 
         with open(self.outfile, 'w') as of:
-            print self.fps
             of.write(JS_INCLUDE.format(interval=30))
             of.write(DISPLAY_TEMPLATE.format(id=self.anim_id,
                                              Nframes=len(self._temp_names),
