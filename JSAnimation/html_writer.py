@@ -7,7 +7,7 @@ import random
 ICON_DIR = os.path.join(os.path.dirname(__file__), 'icons')
 
 class _Icons(object):
-    """class to load icons and convert to base64"""
+    """This class is a container for base64 representations of the icons"""
     icons = ['first', 'prev', 'reverse', 'pause', 'play', 'next', 'last']
 
     def __init__(self, icon_dir=ICON_DIR, extension='png'):
@@ -19,8 +19,8 @@ class _Icons(object):
 
     def _load_base64(self, filename):
         data = open(os.path.join(self.icon_dir, filename), 'rb').read()
-        return 'data:image/{0};base64,{1}"\n'.format(self.extension,
-                                                     data.encode('base64'))
+        return 'data:image/{0};base64,{1}'.format(self.extension,
+                                                  data.encode('base64'))
 
 
 JS_INCLUDE = """
