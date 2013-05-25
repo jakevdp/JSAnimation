@@ -1,7 +1,8 @@
 import os
-from matplotlib.animation import writers, FileMovieWriter
+import warnings
 import tempfile
 import random
+from matplotlib.animation import writers, FileMovieWriter
 
 
 ICON_DIR = os.path.join(os.path.dirname(__file__), 'icons')
@@ -178,9 +179,9 @@ DISPLAY_TEMPLATE = """
     <button onclick="anim{id}.last_frame()"><img class="anim_icon" src="{icons.last}"></button>
     <button onclick="anim{id}.faster()">+</button>
   <form action="#n" name="_anim_loop_select{id}" class="anim_control">
-    <input type="radio" name="state" value="once"> Once </input>
-    <input type="radio" name="state" value="loop" checked> Loop </input>
-    <input type="radio" name="state" value="reflect"> Reflect </input>
+    <input type="radio" name="state" value="once" {once_checked}> Once </input>
+    <input type="radio" name="state" value="loop" {loop_checked}> Loop </input>
+    <input type="radio" name="state" value="reflect" {reflect_checked}> Reflect </input>
   </form>
 </div>
 
@@ -234,8 +235,13 @@ class HTMLWriter(FileMovieWriter):
     supported_formats = ['png', 'jpeg', 'tiff', 'svg']
     
     def __init__(self, fps=30, codec=None, bitrate=None, extra_args=None,
-                 metadata=None, embed_frames=False):
+                 metadata=None, embed_frames=False, default_mode='loop'):
         self.embed_frames = embed_frames
+        self.default_mode = default_mode.lower()
+
+        if self.default_mode not in ['loop', 'once', 'reflect']:
+            warnings.warn("unrecognized default_mode: using 'loop'")
+
         self._saved_frames = list()
         super(HTMLWriter, self).__init__(fps=fps, codec=codec,
                                          bitrate=bitrate,
@@ -287,12 +293,18 @@ class HTMLWriter(FileMovieWriter):
             fill_frames = _included_frames(self._temp_names,
                                            self.frame_format)
 
+        mode_dict = dict(once_checked='',
+                         loop_checked='',
+                         reflect_checked='')
+        mode_dict[self.default_mode + '_checked'] = 'checked'
+
         with open(self.outfile, 'w') as of:
             of.write(JS_INCLUDE.format(interval=30))
             of.write(DISPLAY_TEMPLATE.format(id=self.anim_id,
                                              Nframes=len(self._temp_names),
                                              fill_frames=fill_frames,
-                                             icons=_Icons()))
+                                             icons=_Icons(),
+                                             **mode_dict))
 
         # Increment the counter, so that if multiple animations are made the
         # variables and element ids won't conflict.
