@@ -224,6 +224,7 @@ def _embedded_frames(frame_list, frame_format):
                                     frame_data.replace('\n', '\\\n'))
     return embedded
 
+
 @writers.register('html')
 class HTMLWriter(FileMovieWriter):
     # we start the animation id count at a random number: this way, if two
@@ -240,6 +241,7 @@ class HTMLWriter(FileMovieWriter):
         self.default_mode = default_mode.lower()
 
         if self.default_mode not in ['loop', 'once', 'reflect']:
+            self.default_mode = 'loop'
             warnings.warn("unrecognized default_mode: using 'loop'")
 
         self._saved_frames = list()
@@ -247,7 +249,6 @@ class HTMLWriter(FileMovieWriter):
                                          bitrate=bitrate,
                                          extra_args=extra_args,
                                          metadata=metadata)
-                                         
 
     def setup(self, fig, outfile, dpi, frame_dir=None):
         if os.path.splitext(outfile)[-1] not in ['.html', '.htm']:
@@ -267,7 +268,8 @@ class HTMLWriter(FileMovieWriter):
 
     def grab_frame(self, **savefig_kwargs):
         if self.embed_frames:
-            with tempfile.NamedTemporaryFile(suffix='.png') as f:
+            suffix = '.' + self.frame_format
+            with tempfile.NamedTemporaryFile(suffix=suffix) as f:
                 self.fig.savefig(f.name, format=self.frame_format,
                                  dpi=self.dpi, **savefig_kwargs)
                 self._saved_frames.append(
