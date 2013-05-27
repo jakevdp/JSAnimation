@@ -245,10 +245,8 @@ class HTMLWriter(FileMovieWriter):
             warnings.warn("unrecognized default_mode: using 'loop'")
 
         self._saved_frames = list()
-        super(HTMLWriter, self).__init__(fps=fps, codec=codec,
-                                         bitrate=bitrate,
-                                         extra_args=extra_args,
-                                         metadata=metadata)
+        super(HTMLWriter, self).__init__(fps, codec, bitrate,
+                                         extra_args, metadata)
 
     def setup(self, fig, outfile, dpi, frame_dir=None):
         if os.path.splitext(outfile)[-1] not in ['.html', '.htm']:
@@ -300,8 +298,10 @@ class HTMLWriter(FileMovieWriter):
                          reflect_checked='')
         mode_dict[self.default_mode + '_checked'] = 'checked'
 
+        interval = int(1000. / self.fps)
+
         with open(self.outfile, 'w') as of:
-            of.write(JS_INCLUDE.format(interval=30))
+            of.write(JS_INCLUDE.format(interval=interval))
             of.write(DISPLAY_TEMPLATE.format(id=self.anim_id,
                                              Nframes=len(self._temp_names),
                                              fill_frames=fill_frames,
