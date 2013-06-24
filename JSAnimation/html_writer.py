@@ -1,7 +1,7 @@
 import os
 import warnings
-import tempfile
 import random
+import cStringIO
 from matplotlib.animation import writers, FileMovieWriter
 
 
@@ -267,11 +267,11 @@ class HTMLWriter(FileMovieWriter):
     def grab_frame(self, **savefig_kwargs):
         if self.embed_frames:
             suffix = '.' + self.frame_format
-            with tempfile.NamedTemporaryFile(suffix=suffix) as f:
-                self.fig.savefig(f.name, format=self.frame_format,
-                                 dpi=self.dpi, **savefig_kwargs)
-                self._saved_frames.append(
-                    open(f.name, 'rb').read().encode('base64'))
+            f = cStringIO.StringIO()
+            self.fig.savefig(f, format=self.frame_format,
+                             dpi=self.dpi, **savefig_kwargs)
+            f.reset()
+            self._saved_frames.append(f.read().encode('base64'))
         else:
             return super(HTMLWriter, self).grab_frame(**savefig_kwargs)
 
