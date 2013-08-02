@@ -1,8 +1,8 @@
 from distutils.core import setup
 
-DESCRIPTION = "tools for machine learning and data mining in Astronomy"
+DESCRIPTION = "Javascript Animation exporter for matplotlib and IPython"
 LONG_DESCRIPTION = DESCRIPTION
-NAME = "astroML"
+NAME = "JSAnimation"
 AUTHOR = "Jake VanderPlas"
 AUTHOR_EMAIL = "jakevdp@cs.washington.edu"
 MAINTAINER = "Jake VanderPlas"
