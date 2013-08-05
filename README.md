@@ -31,7 +31,8 @@ A more sophisticated animation can be created using
     python make_lorenz_animation.py
 
 (adapted from [this blog post](http://jakevdp.github.io/blog/2013/02/16/animating-the-lorentz-system-in-3d/)
-The resulting file, ``lorenz_animation.py``, can be opened in your web browser.
+The resulting file, ``lorenz_animation.html``,
+can be opened in your web browser.
 This animation is created using the option ``embed = False``, which means that
 the frames are individually stored in the directory ``lorenz_animation_frames``.
 This prevents the html file from being too large.

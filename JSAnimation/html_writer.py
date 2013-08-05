@@ -3,9 +3,11 @@ import warnings
 import random
 import cStringIO
 from matplotlib.animation import writers, FileMovieWriter
+import random
 
 
 ICON_DIR = os.path.join(os.path.dirname(__file__), 'icons')
+
 
 class _Icons(object):
     """This class is a container for base64 representations of the icons"""
@@ -209,11 +211,13 @@ INCLUDED_FRAMES = """
   }}
 """
 
+
 def _included_frames(frame_list, frame_format):
     """frame_list should be a list of filenames"""
     return INCLUDED_FRAMES.format(Nframes=len(frame_list),
                                   frame_dir=os.path.dirname(frame_list[0]),
                                   frame_format=frame_format)
+
 
 def _embedded_frames(frame_list, frame_format):
     """frame_list should be a list of base64-encoded png files"""
@@ -230,11 +234,15 @@ class HTMLWriter(FileMovieWriter):
     # we start the animation id count at a random number: this way, if two
     # animations are meant to be included on one HTML page, there is a
     # very small chance of conflict.
-    anim_id = random.randint(0, 10000000)
+    rng = random.Random()
     exec_key = 'animation.ffmpeg_path'
     args_key = 'animation.ffmpeg_args'
     supported_formats = ['png', 'jpeg', 'tiff', 'svg']
-    
+
+    @classmethod
+    def new_id(cls):
+        return '%16x' % cls.rng.getrandbits(64)
+
     def __init__(self, fps=30, codec=None, bitrate=None, extra_args=None,
                  metadata=None, embed_frames=False, default_mode='loop'):
         self.embed_frames = embed_frames
@@ -254,7 +262,7 @@ class HTMLWriter(FileMovieWriter):
 
         if not self.embed_frames:
             if frame_dir is None:
-                frame_dir= outfile.rstrip('.html') + '_frames'
+                frame_dir = outfile.rstrip('.html') + '_frames'
             if not os.path.exists(frame_dir):
                 os.makedirs(frame_dir)
             frame_prefix = os.path.join(frame_dir, 'frame')
@@ -302,13 +310,8 @@ class HTMLWriter(FileMovieWriter):
 
         with open(self.outfile, 'w') as of:
             of.write(JS_INCLUDE.format(interval=interval))
-            of.write(DISPLAY_TEMPLATE.format(id=self.anim_id,
+            of.write(DISPLAY_TEMPLATE.format(id=self.new_id(),
                                              Nframes=len(self._temp_names),
                                              fill_frames=fill_frames,
                                              icons=_Icons(),
                                              **mode_dict))
-
-        # Increment the counter, so that if multiple animations are made the
-        # variables and element ids won't conflict.
-        # (this is most useful in IPython notebook)
-        self.__class__.anim_id += 1
