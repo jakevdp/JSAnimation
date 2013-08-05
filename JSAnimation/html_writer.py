@@ -191,17 +191,19 @@ DISPLAY_TEMPLATE = """
 <script language="javascript">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
-  var img_id = "_anim_img{id}";
-  var slider_id = "_anim_slider{id}";
-  var loop_select_id = "_anim_loop_select{id}";
-  var frames = new Array({Nframes});
-  {fill_frames}
+  (function() {{
+    var img_id = "_anim_img{id}";
+    var slider_id = "_anim_slider{id}";
+    var loop_select_id = "_anim_loop_select{id}";
+    var frames = new Array({Nframes});
+    {fill_frames}
 
-  /* set a timeout to make sure all the above elements are created before
-     the object is initialized. */
-  setTimeout(function() {{
-      anim{id} = new Animation(frames, img_id, slider_id, loop_select_id);
-  }}, 0);
+    /* set a timeout to make sure all the above elements are created before
+       the object is initialized. */
+    setTimeout(function() {{
+        anim{id} = new Animation(frames, img_id, slider_id, loop_select_id);
+    }}, 0);
+  }})()
 </script>
 """
 
