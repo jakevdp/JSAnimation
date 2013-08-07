@@ -1,9 +1,9 @@
 import os
 import warnings
-import random
 import cStringIO
 from matplotlib.animation import writers, FileMovieWriter
 import random
+import string
 
 
 ICON_DIR = os.path.join(os.path.dirname(__file__), 'icons')
@@ -243,7 +243,9 @@ class HTMLWriter(FileMovieWriter):
 
     @classmethod
     def new_id(cls):
-        return '%16x' % cls.rng.getrandbits(64)
+        #return '%16x' % cls.rng.getrandbits(64)
+        return ''.join(cls.rng.choice(string.ascii_uppercase)
+                       for x in range(16))
 
     def __init__(self, fps=30, codec=None, bitrate=None, extra_args=None,
                  metadata=None, embed_frames=False, default_mode='loop'):
