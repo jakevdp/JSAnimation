@@ -45,6 +45,5 @@ javascript widget will appear embedded in your notebook window.
 Browser Compatibility
 ---------------------
 Because the animation widget uses an HTML5 slider element, it does not work
-in some browsers.  In particular, Firefox does not yet support this element.
-For a comprehensive list of supported browsers, see
+in some browsers.  For a comprehensive list of supported browsers, see
 [this list](http://caniuse.com/input-range).
