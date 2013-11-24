@@ -1,1 +1,1 @@
-from html_writer import HTMLWriter
+from .html_writer import HTMLWriter
