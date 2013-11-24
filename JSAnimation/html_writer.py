@@ -1,6 +1,9 @@
 import os
 import warnings
-import cStringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 from matplotlib.animation import writers, FileMovieWriter
 import random
 import string
@@ -279,7 +282,7 @@ class HTMLWriter(FileMovieWriter):
     def grab_frame(self, **savefig_kwargs):
         if self.embed_frames:
             suffix = '.' + self.frame_format
-            f = cStringIO.StringIO()
+            f = StringIO()
             self.fig.savefig(f, format=self.frame_format,
                              dpi=self.dpi, **savefig_kwargs)
             f.reset()
