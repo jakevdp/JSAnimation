@@ -1,12 +1,14 @@
 import os
-import warnings
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from io import StringIO
-from matplotlib.animation import writers, FileMovieWriter
+import sys
 import random
 import string
+import warnings
+if sys.version_info < (3, 2):
+    from cStringIO import StringIO as InMemory
+else:
+    from io import BytesIO as InMemory
+from matplotlib.animation import writers, FileMovieWriter
+from base64 import b64encode
 
 
 ICON_DIR = os.path.join(os.path.dirname(__file__), 'icons')
@@ -26,7 +28,7 @@ class _Icons(object):
     def _load_base64(self, filename):
         data = open(os.path.join(self.icon_dir, filename), 'rb').read()
         return 'data:image/{0};base64,{1}'.format(self.extension,
-                                                  data.encode('base64'))
+                                                  b64encode(data).decode('ascii'))
 
 
 JS_INCLUDE = """
@@ -86,7 +88,7 @@ JS_INCLUDE = """
   Animation.prototype.last_frame = function()
   {
     this.set_frame(this.frames.length - 1);
-  } 
+  }
 
   Animation.prototype.slower = function()
   {
@@ -282,11 +284,11 @@ class HTMLWriter(FileMovieWriter):
     def grab_frame(self, **savefig_kwargs):
         if self.embed_frames:
             suffix = '.' + self.frame_format
-            f = StringIO()
+            f = InMemory()
             self.fig.savefig(f, format=self.frame_format,
                              dpi=self.dpi, **savefig_kwargs)
-            f.reset()
-            self._saved_frames.append(f.read().encode('base64'))
+            f.seek(0)
+            self._saved_frames.append(b64encode(f.read()).decode('ascii'))
         else:
             return super(HTMLWriter, self).grab_frame(**savefig_kwargs)
 
