@@ -3,7 +3,7 @@ import sys
 import random
 import string
 import warnings
-if sys.version_info < (3, 2):
+if sys.version_info < (3, 0):
     from cStringIO import StringIO as InMemory
 else:
     from io import BytesIO as InMemory
