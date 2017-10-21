@@ -1,6 +1,8 @@
 JSAnimation
 ===========
 
+**NOTE: this package is part of matplotlib as of version 2.1. The code here is maintained only for historical purposes.**
+
 *Copyright (c) 2013, Jake Vanderplas*
 
 *License: [BSD](http://opensource.org/licenses/BSD-2-Clause)*
